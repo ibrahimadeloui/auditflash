@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { rememberAudit } from "@/lib/memory";
+import type { ScanRecord } from "@/lib/types";
 
 const STEPS = [
   "Lecture de l'adresse",
@@ -35,8 +37,9 @@ export function ScanForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(demo ? { demo: true } : { url: url.trim() }),
       });
-      const data = (await response.json()) as { id?: string; error?: string };
+      const data = (await response.json()) as ScanRecord & { error?: string };
       if (!response.ok || !data.id) throw new Error(data.error || "Diagnostic impossible.");
+      rememberAudit(data);
       timers.forEach((timer) => window.clearTimeout(timer));
       setStep(STEPS.length - 1);
       window.setTimeout(() => router.push(`/audit/${data.id}`), 450);
@@ -98,10 +101,10 @@ export function ScanForm() {
             />
           </label>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <button className="btn btn-lime" type="submit">
+            <button className="btn btn-lime btn-stretch" type="submit">
               Lancer le diagnostic
             </button>
-            <button className="btn btn-ghost" type="button" onClick={() => void run(true)}>
+            <button className="btn btn-ghost btn-stretch" type="button" onClick={() => void run(true)}>
               Scanner la boutique de démo
             </button>
           </div>

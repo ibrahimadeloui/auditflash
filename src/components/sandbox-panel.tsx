@@ -21,7 +21,7 @@ export function SandboxPanel({ findings }: { findings: Finding[] }) {
             Le bouton rouge appartient à la page hostile, pas à la boutique.
           </p>
         </div>
-        <button className={patched ? "btn btn-ghost" : "btn btn-lime"} type="button" onClick={() => setPatched((value) => !value)}>
+        <button className={patched ? "btn btn-ghost btn-stretch" : "btn btn-lime btn-stretch"} type="button" onClick={() => setPatched((value) => !value)}>
           {patched ? "Retirer le patch virtuel" : "Appliquer le patch virtuel"}
         </button>
       </div>
@@ -32,7 +32,7 @@ export function SandboxPanel({ findings }: { findings: Finding[] }) {
             <span className="dot" />
             <span className="dot" />
             <span className="dot" />
-            <span>promo-cadeau.example — page hostile</span>
+            <span className="addr">promo-cadeau.example — page hostile</span>
           </div>
           <div className="frame-slot">
             {patched ? (
@@ -66,7 +66,7 @@ export function SandboxPanel({ findings }: { findings: Finding[] }) {
             <span className="dot" />
             <span className="dot" />
             <span className="dot" />
-            <span>atelier-nadi.example — visite directe</span>
+            <span className="addr">atelier-nadi.example — visite directe</span>
           </div>
           <div className="frame-slot">
             <iframe title="Boutique visitée directement" src="/demo/boutique" />

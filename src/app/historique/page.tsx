@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatDate } from "@/lib/format";
+import { recallAudits } from "@/lib/memory";
 
 type Item = {
   id: string;
@@ -18,22 +19,32 @@ export default function HistoryPage() {
   const [items, setItems] = useState<Item[] | null>(null);
 
   useEffect(() => {
+    const local = recallAudits();
     void fetch("/api/audits")
       .then((response) => response.json())
-      .then((data: Item[]) => setItems(data));
+      .then((data: Item[]) => {
+        const remote = Array.isArray(data) ? data : [];
+        const seen = new Set(remote.map((item) => item.id));
+        const merged = [
+          ...remote,
+          ...local.filter((item) => !seen.has(item.id)),
+        ].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+        setItems(merged);
+      })
+      .catch(() => setItems(local));
   }, []);
 
   return (
     <main className="shell py-8">
       <h1 className="display text-4xl text-white">Historique</h1>
-      <p className="mt-2 text-sm text-muted">Les quarante derniers diagnostics de cette machine.</p>
+      <p className="mt-2 text-sm text-muted">Les derniers diagnostics de ce navigateur.</p>
       <div className="mt-8 grid gap-3">
         {items === null ? <p className="text-muted">Chargement…</p> : null}
         {items?.length === 0 ? <p className="text-muted">Aucun diagnostic pour le moment.</p> : null}
         {items?.map((item) => (
-          <Link key={item.id} href={`/audit/${item.id}`} className="panel flex items-center justify-between gap-4 p-5 no-underline">
-            <span>
-              <strong className="block text-white">{item.targetLabel}</strong>
+          <Link key={item.id} href={`/audit/${item.id}`} className="panel flex flex-wrap items-center justify-between gap-4 p-5 no-underline">
+            <span className="min-w-0">
+              <strong className="block break-words text-white">{item.targetLabel}</strong>
               <span className="text-sm text-muted">
                 {formatDate(item.createdAt)}
                 {item.demo ? " · démonstration" : ""}

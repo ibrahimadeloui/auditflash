@@ -29,7 +29,7 @@ export default function Home() {
       <section className="shell grid items-end gap-10 py-8 lg:grid-cols-[1.15fr_0.85fr] lg:py-16">
         <div>
           <p className="text-sm tracking-[0.18em] text-lime uppercase">Pour les particuliers, TPE et PME</p>
-          <h1 className="display mt-4 text-5xl leading-[0.95] text-white sm:text-7xl">
+          <h1 className="display mt-4 text-4xl leading-[0.95] text-white sm:text-6xl lg:text-7xl">
             La cybersécurité simplifiée, jusqu'au correctif.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-mist">

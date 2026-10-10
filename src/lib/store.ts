@@ -1,11 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { promises as fs } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { analyze } from "./analyze";
 import { summarize } from "./score";
 import type { RawExchange, ScanRecord } from "./types";
 
-const file = path.join(process.cwd(), "data", "audits.json");
+const file = path.join(process.env.VERCEL ? os.tmpdir() : process.cwd(), process.env.VERCEL ? "auditflash-audits.json" : path.join("data", "audits.json"));
 
 type Db = { audits: ScanRecord[] };
 
@@ -45,10 +46,14 @@ export function buildRecord(exchange: RawExchange): ScanRecord {
 }
 
 export async function saveAudit(record: ScanRecord): Promise<void> {
-  const db = await readDb();
-  db.audits = [record, ...db.audits.filter((item) => item.id !== record.id)].slice(0, 40);
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(db, null, 2), "utf8");
+  try {
+    const db = await readDb();
+    db.audits = [record, ...db.audits.filter((item) => item.id !== record.id)].slice(0, 40);
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, JSON.stringify(db, null, 2), "utf8");
+  } catch {
+    // L'hébergement serverless n'autorise pas l'écriture durable. Le navigateur conserve le diagnostic.
+  }
 }
 
 export async function listAudits(): Promise<ScanRecord[]> {

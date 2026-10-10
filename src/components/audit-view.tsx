@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { RemediationPanel } from "@/components/remediation-panel";
 import { SandboxPanel } from "@/components/sandbox-panel";
 import { formatDate, formatMoney } from "@/lib/format";
+import { recallAudit, rememberAudit } from "@/lib/memory";
 import { SEVERITY_LABEL } from "@/lib/score";
 import type { ScanRecord } from "@/lib/types";
 
@@ -19,14 +20,17 @@ export function AuditView({ id, mode = "screen" }: { id: string; mode?: "screen"
 
   useEffect(() => {
     let cancelled = false;
+    const cached = recallAudit(id);
+    if (cached) setRecord(cached);
     void (async () => {
       const response = await fetch(`/api/audits/${id}`);
       const data = (await response.json()) as ScanRecord & { error?: string };
       if (cancelled) return;
       if (!response.ok) {
-        setError(data.error || "Diagnostic introuvable.");
+        if (!cached) setError(data.error || "Diagnostic introuvable.");
         return;
       }
+      rememberAudit(data);
       setRecord(data);
     })();
     return () => {
@@ -49,8 +53,8 @@ export function AuditView({ id, mode = "screen" }: { id: string; mode?: "screen"
           <p className="text-sm tracking-[0.14em] text-lime uppercase">
             {report ? "Rapport exécutif" : "Module 2 · impact métier"}
           </p>
-          <h1 className="display mt-2 text-4xl text-white sm:text-5xl">{record.targetLabel}</h1>
-          <p className="mt-3 text-sm text-muted">
+          <h1 className="display mt-2 text-3xl text-white sm:text-5xl">{record.targetLabel}</h1>
+          <p className="mt-3 break-all text-sm text-muted">
             {formatDate(record.createdAt)} · {record.finalUrl}
           </p>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { pullRequestText, snippetsFor } from "@/lib/remediation";
+import { patchDocument, pullRequestText, snippetsFor } from "@/lib/remediation";
 import type { ScanRecord } from "@/lib/types";
 
 export function RemediationPanel({ record }: { record: ScanRecord }) {
@@ -13,6 +13,16 @@ export function RemediationPanel({ record }: { record: ScanRecord }) {
   async function copy(value: string, label: string) {
     await navigator.clipboard.writeText(value);
     setNote(`${label} copié.`);
+  }
+
+  function downloadPatch() {
+    const blob = new Blob([patchDocument(record)], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "auditflash-correctif.txt";
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   if (!current) return null;
@@ -48,14 +58,14 @@ export function RemediationPanel({ record }: { record: ScanRecord }) {
         </div>
         <pre className="m-0 px-4 py-4 text-sm leading-6 text-mist">{current.code}</pre>
       </div>
-      <div className="flex flex-wrap gap-3">
-        <a className="btn btn-lime no-underline" href={`/api/audits/${record.id}/patch`}>
+      <div className="actions flex flex-wrap gap-3">
+        <button className="btn btn-lime btn-stretch" type="button" onClick={downloadPatch}>
           Télécharger le correctif
-        </a>
-        <button className="btn btn-ghost" type="button" onClick={() => void copy(pullRequestText(record), "Message de pull request")}>
+        </button>
+        <button className="btn btn-ghost btn-stretch" type="button" onClick={() => void copy(pullRequestText(record), "Message de pull request")}>
           Copier le message de pull request
         </button>
-        <a className="btn btn-ghost no-underline" href={`/rapport/${record.id}`}>
+        <a className="btn btn-ghost btn-stretch no-underline" href={`/rapport/${record.id}`}>
           Rapport dirigeant
         </a>
       </div>
