@@ -2,14 +2,16 @@
 
 @theme inline {
   --font-sans: var(--font-outfit);
-  --font-display: var(--font-syne);
-  --color-ink: #081018;
-  --color-panel: #10202b;
-  --color-panel-2: #17313c;
-  --color-line: #2c4a55;
-  --color-lime: #d6f25c;
-  --color-mist: #d7e6e0;
-  --color-muted: #8aa199;
+  --font-display: var(--font-rajdhani);
+  --font-mono: var(--font-jetbrains);
+  --color-ink: #04101c;
+  --color-panel: #07182c;
+  --color-panel-2: #0c2744;
+  --color-line: #1c4d73;
+  --color-lime: #3de7ff;
+  --color-flare: #ff9a1f;
+  --color-mist: #e7f4ff;
+  --color-muted: #8eb0cc;
   --color-danger: #ff5d6c;
   --color-warn: #ffc14a;
   --color-ok: #3ee0a0;
@@ -22,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body:has(.shop-demo) {
@@ -37,9 +40,12 @@ body {
   min-height: 100vh;
   overflow-x: clip;
   background:
-    radial-gradient(900px 420px at 100% -10%, rgba(214, 242, 92, 0.14), transparent 55%),
-    radial-gradient(700px 380px at -10% 10%, rgba(62, 224, 160, 0.08), transparent 50%),
+    linear-gradient(rgba(61, 231, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 231, 255, 0.045) 1px, transparent 1px),
+    radial-gradient(900px 480px at 100% -10%, rgba(61, 231, 255, 0.16), transparent 55%),
+    radial-gradient(680px 420px at -10% 0%, rgba(255, 154, 31, 0.12), transparent 48%),
     var(--color-ink);
+  background-size: 52px 52px, 52px 52px, auto, auto, auto;
   color: var(--color-mist);
   font-family: var(--font-outfit), sans-serif;
 }
@@ -51,7 +57,7 @@ input {
 
 ::selection {
   background: var(--color-lime);
-  color: var(--color-ink);
+  color: #04101c;
 }
 
 .shell {
@@ -60,14 +66,21 @@ input {
 }
 
 .display {
-  font-family: var(--font-syne), sans-serif;
-  letter-spacing: -0.04em;
+  font-family: var(--font-rajdhani), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.script {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 .panel {
-  background: color-mix(in srgb, var(--color-panel) 92%, black);
-  border: 1px solid var(--color-line);
+  background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+  border: 1px solid rgba(61, 231, 255, 0.28);
   border-radius: 1.4rem;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
 }
 
 .btn {
@@ -96,8 +109,9 @@ input {
 
 .btn-lime {
   background: var(--color-lime);
-  color: #13200a;
+  color: #04131c;
   font-weight: 650;
+  box-shadow: 0 0 24px rgba(61, 231, 255, 0.28);
 }
 
 .btn-ghost {
@@ -124,10 +138,10 @@ input {
 }
 
 .grade strong {
-  font-family: var(--font-syne), sans-serif;
+  font-family: var(--font-rajdhani), sans-serif;
   font-size: 3.4rem;
   line-height: 1;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.04em;
 }
 
 .grade span {
@@ -136,7 +150,7 @@ input {
 }
 
 .grade-ok {
-  background: radial-gradient(circle at 30% 20%, rgba(214, 242, 92, 0.35), #14240f 70%);
+  background: radial-gradient(circle at 30% 20%, rgba(61, 231, 255, 0.32), #07182c 70%);
   color: var(--color-lime);
 }
 
@@ -281,6 +295,423 @@ pre {
 
   .btn-stretch {
     width: 100%;
+  }
+}
+
+.brand-logo {
+  height: 3.35rem;
+  width: auto;
+  max-width: min(280px, 68vw);
+  border-radius: 0.8rem;
+  background: #f4f8fc;
+  object-fit: contain;
+  box-shadow:
+    0 0 0 1px rgba(61, 231, 255, 0.45),
+    0 0 22px rgba(61, 231, 255, 0.28);
+}
+
+.hero-logo {
+  height: clamp(4.6rem, 14vw, 7.2rem);
+  width: auto;
+  max-width: min(640px, 100%);
+  border-radius: 1rem;
+  background: #f4f8fc;
+  object-fit: contain;
+  object-position: left center;
+  box-shadow:
+    0 0 0 1px rgba(255, 154, 31, 0.45),
+    0 0 40px rgba(61, 231, 255, 0.28);
+}
+
+.hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(61, 231, 255, 0.35);
+  border-radius: 999px;
+  color: var(--color-lime);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(4, 16, 32, 0.55);
+}
+
+.hud-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #3ee0a0;
+  box-shadow: 0 0 10px #3ee0a0;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.cyber-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cyber-rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+}
+
+.cyber-grid {
+  position: absolute;
+  inset: -20%;
+  background:
+    linear-gradient(rgba(61, 231, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 231, 255, 0.08) 1px, transparent 1px);
+  background-size: 64px 64px;
+  transform: perspective(500px) rotateX(62deg) translateY(18%);
+  animation: grid-drift 16s linear infinite;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent 72%);
+}
+
+.cyber-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 18vh;
+  background: linear-gradient(to bottom, transparent, rgba(61, 231, 255, 0.16), transparent);
+  animation: scan-sweep 7.5s linear infinite;
+}
+
+.cyber-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.7;
+}
+
+.cyber-orb-a {
+  top: 12%;
+  right: 8%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(61, 231, 255, 0.45), transparent 68%);
+  animation: drift 9s ease-in-out infinite;
+}
+
+.cyber-orb-b {
+  bottom: 8%;
+  left: 4%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(255, 154, 31, 0.28), transparent 70%);
+  animation: drift 12s ease-in-out infinite reverse;
+}
+
+.cyber-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(4, 16, 28, 0.72) 100%);
+}
+
+.shield-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 280px;
+  overflow: hidden;
+}
+
+.shield-art {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 420px);
+  border-radius: 1.6rem;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 1px rgba(61, 231, 255, 0.45),
+    0 0 48px rgba(61, 231, 255, 0.35);
+  animation: floaty 5.5s ease-in-out infinite;
+}
+
+.shield-ring {
+  position: absolute;
+  width: min(88%, 28rem);
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px dashed rgba(61, 231, 255, 0.55);
+  animation: spin 22s linear infinite;
+}
+
+.shield-ring-delay {
+  width: min(72%, 22rem);
+  border-style: solid;
+  border-color: rgba(255, 154, 31, 0.45);
+  animation-duration: 14s;
+  animation-direction: reverse;
+}
+
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: #7af3ff;
+  animation: glitch-a 2.6s infinite linear alternate-reverse;
+  clip-path: inset(0 0 58% 0);
+}
+
+.glitch::after {
+  color: #ffb15a;
+  animation: glitch-b 3.1s infinite linear alternate-reverse;
+  clip-path: inset(62% 0 0 0);
+}
+
+.term {
+  overflow: hidden;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(61, 231, 255, 0.35);
+  background: rgba(3, 10, 20, 0.82);
+  box-shadow: 0 0 32px rgba(61, 231, 255, 0.12);
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.9rem;
+  background: #071422;
+  color: var(--color-muted);
+}
+
+.term-bar span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #35515c;
+}
+
+.term-bar span:first-child {
+  background: #ff5d6c;
+}
+
+.term-bar span:nth-child(2) {
+  background: #ffc14a;
+}
+
+.term-bar span:nth-child(3) {
+  background: #3ee0a0;
+}
+
+.term-bar p {
+  margin: 0 0 0 0.45rem;
+  overflow: hidden;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.term-body {
+  min-height: 13.5rem;
+  margin: 0;
+  padding: 0.9rem 1rem 1.1rem;
+  color: #b7f6ff;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.term-body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.caret {
+  color: var(--color-flare);
+  animation: blink 1s steps(1) infinite;
+}
+
+.ticker {
+  overflow: hidden;
+  max-width: 100%;
+  border-block: 1px solid rgba(61, 231, 255, 0.28);
+  background: rgba(4, 14, 28, 0.82);
+}
+
+.ticker-track {
+  display: flex;
+  gap: 2.4rem;
+  width: max-content;
+  padding: 0.7rem 0;
+  color: #9eefff;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: ticker 32s linear infinite;
+}
+
+.module-card {
+  animation: rise 0.7s ease both;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scan-sweep {
+  0% {
+    top: -20%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 0 64px, 64px 0;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(18px, -24px, 0);
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes glitch-a {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-b {
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(2px, 0);
+  }
+  50% {
+    transform: translate(-2px, 1px);
+  }
+  75% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .brand-logo {
+    height: 2.7rem;
+    max-width: 58vw;
+  }
+
+  .shield-wrap {
+    min-height: 220px;
+  }
+
+  .term-body {
+    min-height: 11rem;
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after,
+  .cyber-scan,
+  .cyber-grid,
+  .cyber-orb,
+  .shield-art,
+  .shield-ring,
+  .ticker-track,
+  .hud-dot,
+  .caret,
+  .module-card {
+    animation: none;
   }
 }
 
